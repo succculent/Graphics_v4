@@ -1,0 +1,17 @@
+html,
+body
+{
+    overflow: hidden;
+    background-color: rgb( 255, 255, 255 );
+    margin: 0;
+    padding: 0;
+}
+
+.webgl
+{
+    position: absolute;
+    outline: none;
+    z-index: 1;
+    width: 100%;
+    image-rendering: optimizeSpeed;
+}
