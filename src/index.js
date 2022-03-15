@@ -8,6 +8,8 @@ import scene1 from './Scenes/scene1.js'
 import scene2 from './Scenes/scene2.js'
 import scene3 from './Scenes/scene3.js'
 import scene4 from './Scenes/scene4.js'
+import scene5 from './Scenes/scene5.js'
+import scene6 from './Scenes/scene6.js'
 
 function component() {
     /*
@@ -17,16 +19,6 @@ function component() {
     var canvas = document.createElement( 'canvas' );
     canvas.classList.add( 'webgl' );
     element.appendChild( canvas );
-
-    // const leftButton = document.createElement( 'button' );
-    // leftButton.classList.add( 'arrow' );
-    // leftButton.classList.add( 'l' );
-    // element.appendChild( leftButton );
-
-    // const rightButton = document.createElement( 'button' );
-    // rightButton.classList.add( 'arrow' );
-    // rightButton.classList.add( 'r' );
-    // element.appendChild( rightButton );
 
     var sizes = {
         width: window.innerWidth,
@@ -41,8 +33,11 @@ function component() {
     let s2 = new scene2( sizes, A );
     let s3 = new scene3( sizes, A );
     let s4 = new scene4( sizes, A );
-    let scenes = [s1, s2, s3, s4];
-    let curScene = scenes[3];
+    let s5 = new scene5( sizes, A );
+    let s6 = new scene6( sizes, A );
+    let scenes = [ s1, s2, s3, s5, s6 ];
+    let curSceneIndex = 3;
+    let curScene = scenes[ curSceneIndex ];
 
     let R = new Renderer( canvas, sizes );
 
@@ -53,12 +48,40 @@ function component() {
         curScene.resize( sizes );
     });
 
+    window.addEventListener( "keydown", function ( event ) {
+        if ( event.defaultPrevented ) {
+          return; // Do nothing if the event was already processed
+        }
+        switch ( event.key ) {
+          case "ArrowDown":
+            // code for "down arrow" key press.
+            break;
+          case "ArrowUp":
+            // code for "up arrow" key press.
+            break;
+          case "ArrowLeft":
+            if ( curSceneIndex == 0 ) curSceneIndex = scenes.length - 1;
+            else curSceneIndex--;
+            curScene = scenes[ curSceneIndex ];
+            break;
+          case "ArrowRight":
+            curSceneIndex = ( curSceneIndex + 1 ) % scenes.length;
+            curScene = scenes[ curSceneIndex ];
+            break;
+          default:
+            return; // Quit when this doesn't handle the key event.
+        }
+      
+        // Cancel the default action to avoid it being handled twice
+        event.preventDefault();
+    }, true);
+
     const clock = new THREE.Clock( );
     const tick = ( ) =>
     {   
         var deltaTime = clock.getDelta( );
         var elapsedTime = clock.getElapsedTime( );
-        curScene = scenes[ Math.floor( elapsedTime/8 ) % 4 ];
+        // curScene = scenes[ Math.floor( elapsedTime/8 ) % 4 ];
         A.onTick();
         R.render( curScene.scene, curScene.C.camera );
         curScene.tick( deltaTime, elapsedTime, A );

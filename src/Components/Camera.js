@@ -110,7 +110,7 @@ export default class Camera
     {
         this.camera = new THREE.PerspectiveCamera( 75, sizes.width / sizes.height, 1, 100 );
         this.camera.position.set( -50, -50, -50 );
-        this.camera.lookAt(0,0,0)
+        this.camera.lookAt( 0, 0, 0 );
     }
     createCamera3( sizes ) {
         this.camera = new THREE.PerspectiveCamera( 75, sizes.width / sizes.height, 0.1, 1000 );

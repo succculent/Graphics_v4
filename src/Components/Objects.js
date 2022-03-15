@@ -3,6 +3,8 @@ import vertexFairy from '../shaders/vertexFairy.glsl'
 import fragmentFairy from '../shaders/fragmentFairy.glsl'
 import vertexCircles from '../shaders/vertexCirlces.glsl'
 import fragmentCircles from '../shaders/fragmentCirlces.glsl'
+import vertexVoronoi from '../shaders/vertexVoronoi.glsl'
+import fragmentVoronoi from '../shaders/fragmentVoronoi.glsl'
 
 export default class Objects
 {
@@ -139,5 +141,53 @@ export default class Objects
     tick4( A, elapsedTime )
     {
         this.planeMaterial.uniforms.uTime.value = elapsedTime;
+    }
+    //SCENE 5
+    objects5( scene )
+    {
+        this.colors = [ 0xffff00, 0xff00ff, 0x00ffff, 0xff0000, 0x00ff00, 0x0000ff, 0xffffff];
+        this.cubes = [ ];
+        for ( let i = 0; i < 40; i++ ) {
+            let geometry = new THREE.CircleGeometry( 27 - Math.random()*5, 64 - Math.random()*32);
+            let material = new THREE.MeshBasicMaterial( { wireframe: true, wireframeLinewidth: 2.0, color: this.colors[ i % 7 ] } );
+            let temp = new THREE.Mesh( geometry, material );
+            temp.geometry.verticesNeedUpdate = true;
+            temp.geometry.dynamic = true;
+            scene.add( temp );
+            this.cubes.push( temp );
+        }
+    }
+    tick5( A, deltaTime )
+    {
+        this.cubes.forEach( ( e, i ) => {
+            let dataValue =  A.data[ (i * 25) % 1024 ];
+            e.rotateX( deltaTime * Math.PI/4 * dataValue * 0.01 );
+            e.rotateY( deltaTime * Math.PI/6 * dataValue * 0.01 );
+            e.rotateZ( deltaTime * Math.PI/2 * dataValue * 0.01 );
+        });
+    }
+    //SCENE 6
+    objects6( scene, sizes, A )
+    {
+        var planeGeometry = new THREE.PlaneGeometry( sizes.width/2, sizes.height/2 );
+        this.planeMaterial = new THREE.ShaderMaterial({
+            vertexShader: vertexVoronoi,
+            fragmentShader: fragmentVoronoi,
+            uniforms: {
+                uTime: {value: 0.0},
+                uResY: {value: sizes.height},
+                uResX: {value: sizes.width},
+                uFFT: { type: "fv1",  value: A.data }
+            },
+        });
+        this.planeMaterial.needsUpdate = true;
+        this.plane = new THREE.Mesh( planeGeometry, this.planeMaterial );
+        this.plane.lookAt(new THREE.Vector3(-0.7, -0.7, -0.7));
+        scene.add( this.plane );
+    }
+    tick6( A, elapsedTime )
+    {
+        this.planeMaterial.uniforms.uTime.value = elapsedTime;
+        this.planeMaterial.uniforms.uFFT.value = A.data;
     }
 };
