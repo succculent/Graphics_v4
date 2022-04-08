@@ -34,6 +34,6 @@ float voronoise( in vec2 p, float u, float v )
 
 void main() {
     vec2 uv = gl_FragCoord.xy / vec2(uResX, uResY);
-	float f = voronoise( (10.0+uFFT[200]*0.25)*uv, 10.0 - uFFT[100] * 0.5, 5.0 - uFFT[400] * 0.1 - uFFT[800] * 0.2);
+	float f = voronoise( (10.0+uFFT[400]*0.25)*uv, 10.0 - uFFT[100] * 0.5, 5.0 - uFFT[200] * 0.1 - uFFT[800] * 0.2);
     gl_FragColor = vec4(vec3(f), 1.0);
 }
