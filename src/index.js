@@ -8,7 +8,7 @@ import song4 from './assets/song4.mp3'
 import song5 from './assets/song5.mp3'
 import AudioInstance from './Components/Audio.js'
 import Renderer from './Components/Renderer.js' 
-// import Popup from './Components/Popup.js'
+import Popup from './Components/Popup.js'
 import scene1 from './Scenes/scene1.js'
 import scene2 from './Scenes/scene2.js'
 import scene3 from './Scenes/scene3.js'
@@ -44,12 +44,16 @@ function component() {
     let s5 = new scene5( sizes, A );
     let s6 = new scene6( sizes, A );
     let scenes = [ s1, s2, s3, s5, s6 ];
-    let curSceneIndex = 3;
+    let curSceneIndex = 0;
     let curScene = scenes[ curSceneIndex ];
 
-    // let p = new Popup( songNames[ curSongIndex ][ 0 ], songNames[ curSongIndex ][ 1 ] );
-    // element.appendChild( p.divv );
-    // let pTrack = true;
+    let songLabels = [];
+    for (let i = 0; i < songNames.length; i++) {
+      let p = new Popup( songNames[ i ][ 0 ], songNames[ i ][ 1 ] );
+      element.appendChild( p.divv );
+      songLabels.push(p);
+    }
+    songLabels[ curSceneIndex ].activate()
 
     let R = new Renderer( canvas, sizes );
 
@@ -66,25 +70,17 @@ function component() {
         }
         switch ( event.key ) {
           case "ArrowDown":
+            if ( songLabels[ curSongIndex ].countDown ) songLabels[ curSongIndex ].deactivate();
             if ( curSongIndex == 0 ) curSongIndex = songs.length - 1;
             else curSongIndex--;
             A.loadTrack( songs[curSongIndex] );
-            // if (!pTrack) {
-            //   p.divv.parentNode.removeChild(p.divv);
-            //   delete p;
-            // }
-            // p = new Popup( songNames[ curSongIndex ][ 0 ], songNames[ curSongIndex ][ 1 ] );
-            // pTrack = true;
+            songLabels[curSongIndex].activate();
             break;
           case "ArrowUp":
+            if ( songLabels[ curSongIndex ].countDown ) songLabels[ curSongIndex ].deactivate();
             curSongIndex = ( curSongIndex + 1 ) % songs.length;
             A.loadTrack( songs[curSongIndex] );
-            // if (!pTrack) {
-            //   p.divv.parentNode.removeChild(p.divv);
-            //   delete p;
-            // }
-            // p = new Popup( songNames[ curSongIndex ][ 0 ], songNames[ curSongIndex ][ 1 ] );
-            // pTrack = true;
+            songLabels[curSongIndex].activate();
             break;
           case "ArrowLeft":
             if ( curSceneIndex == 0 ) curSceneIndex = scenes.length - 1;
@@ -108,13 +104,7 @@ function component() {
     {   
         var deltaTime = clock.getDelta( );
         var elapsedTime = clock.getElapsedTime( );
-        // if ( pTrack ) {
-        //   p.update( deltaTime );
-        //   if ( p.deleteMe ) {
-        //     p.divv.parentNode.removeChild(p.divv);
-        //     pTrack = false;
-        //   }
-        // }
+        songLabels.forEach( ( p ) => { p.update( deltaTime ); } );
         A.onTick( );
         R.render( curScene.scene, curScene.C.camera );
         curScene.tick( deltaTime, elapsedTime, A );

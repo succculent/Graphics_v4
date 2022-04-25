@@ -27,6 +27,12 @@ body
     width: 200px;
 }
 
+.hidden
+{
+    visibility: hidden;
+    /* transition: 'visibility' 5s; */
+}
+
 h1
 {
     font-size: 1.5em;
