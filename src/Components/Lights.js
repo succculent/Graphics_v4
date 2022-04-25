@@ -24,7 +24,7 @@ export default class Lights
         scene.add( hem );
     }
     lights3( scene )
-    {
+    {       
         //sun 1
         var sun1 = new THREE.DirectionalLight( 0xffffff, 0.6 );
         sun1.position.set( 20, 0, -30 );

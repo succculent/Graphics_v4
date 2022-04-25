@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// import { MTLLoader, OBJLoader } from "three-obj-mtl-loader";
 //var SRC = path.resolve(__dirname, 'src/index.js');
 
 module.exports = {
@@ -31,6 +32,14 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.obj$/,
+        loader: 'webpack-obj-loader'
+      },
+      {
+        test: /\.mtl$/,
+        loader: 'mtl-loader'
       },
       {
         test: /\.glsl$/,

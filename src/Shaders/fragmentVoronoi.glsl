@@ -8,7 +8,7 @@ vec3 hash3( vec2 p )
     vec3 q = vec3( dot(p,vec2(127.1,311.7)), 
 				   dot(p,vec2(269.5,183.3)), 
 				   dot(p,vec2(419.2,371.9)) );
-	return fract(sin(q)*43758.5453);
+	return fract(sin(q * uFFT[100] * 0.001)*43758.5453);
 }
 
 float voronoise( in vec2 p, float u, float v )
@@ -33,7 +33,20 @@ float voronoise( in vec2 p, float u, float v )
 }
 
 void main() {
+    vec3 red = vec3(1.0, 1.0, 1.0);
+    vec3 blue = vec3(0.0, 0.0, 1.0);
     vec2 uv = gl_FragCoord.xy / vec2(uResX, uResY);
-	float f = voronoise( (10.0+uFFT[400]*0.25)*uv, 10.0 - uFFT[100] * 0.5, 5.0 - uFFT[200] * 0.1 - uFFT[800] * 0.2);
-    gl_FragColor = vec4(vec3(f), 1.0);
+    float one = uFFT[400];
+    float two = cos(cos(uTime)) * uFFT[100];
+	float f = voronoise( (10.0 + one * 0.01) * uv, two * 0.1, sin(cos(sin(uTime)) * uFFT[800] * 0.001));
+    float f2 = voronoise( (3.0 * one * 0.01) * uv, two * 0.1, sin(cos(sin(uTime)) * uFFT[800] * 0.01));
+    float f3 = voronoise( (40.0 * one * 0.1) * uv, two * 0.3, sin(cos(sin(uTime)) * uFFT[800] * 0.02));
+    vec3 color = red;
+    vec3 lerpVec = blue-red;
+    lerpVec = lerpVec / length(lerpVec);
+    color += lerpVec * (f + 0.1);
+    color.g += f2;
+    color.b += f3;
+    color = color / length(color);
+    gl_FragColor = vec4(color, 1.0);
 }

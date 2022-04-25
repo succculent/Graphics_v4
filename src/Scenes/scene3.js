@@ -12,6 +12,7 @@ export default class scene3
         //create scene
         this.scene = new THREE.Scene( );
         this.scene.background = new THREE.Color( 0.0, 0.0, 0.05 );
+        // this.scene.background = new THREE.Color( 1.0, 0.5, 0.05 );
         //create objects
         this.O = new Objects( );
         this.O.objects3( this.scene );

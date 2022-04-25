@@ -143,27 +143,38 @@ export default class Objects
         this.planeMaterial.uniforms.uTime.value = elapsedTime;
     }
     //SCENE 5
+    createCircle( r, d )
+    {
+        let geometry = new THREE.CircleGeometry( r, d );
+        return geometry;
+    }
     objects5( scene )
     {
         this.colors = [ 0xffff00, 0xff00ff, 0x00ffff, 0xff0000, 0x00ff00, 0x0000ff, 0xffffff];
         this.cubes = [ ];
         for ( let i = 0; i < 40; i++ ) {
-            let geometry = new THREE.CircleGeometry( 27 - Math.random()*5, 64 - Math.random()*32);
+            let r = 27 - Math.random()*5;
+            let d = 64 - Math.random()*32;
+            let geometry = this.createCircle( r,  d );
             let material = new THREE.MeshBasicMaterial( { wireframe: true, wireframeLinewidth: 2.0, color: this.colors[ i % 7 ] } );
             let temp = new THREE.Mesh( geometry, material );
             temp.geometry.verticesNeedUpdate = true;
             temp.geometry.dynamic = true;
             scene.add( temp );
-            this.cubes.push( temp );
+            this.cubes.push( [ temp, r, d ] );
         }
     }
     tick5( A, deltaTime )
     {
         this.cubes.forEach( ( e, i ) => {
             let dataValue =  A.data[ (i * 25) % 1024 ];
-            e.rotateX( deltaTime * Math.PI/4 * dataValue * 0.01 );
-            e.rotateY( deltaTime * Math.PI/6 * dataValue * 0.01 );
-            e.rotateZ( deltaTime * Math.PI/2 * dataValue * 0.01 );
+            e[0].rotateX( deltaTime * Math.PI/4 * dataValue * 0.01 );
+            e[0].rotateY( deltaTime * Math.PI/6 * dataValue * 0.01 );
+            e[0].rotateZ( deltaTime * Math.PI/2 * dataValue * 0.01 );
+            let r = (dataValue - e[1] ) * deltaTime;
+            let geometry = this.createCircle( r , e[2] );
+            let material = new THREE.MeshBasicMaterial( { wireframe: true, wireframeLinewidth: 2.0, color: this.colors[ i % 7 ] } );
+            this.cubes[i] = new THREE.Mesh( geometry, material );
         });
     }
     //SCENE 6

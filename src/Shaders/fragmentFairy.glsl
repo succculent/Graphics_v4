@@ -80,14 +80,14 @@ void main(){
     //color4
 
     float leafBase = 0.1;
-    float leavesTop = cos ( atan ( topR.y / topR.x ) * fft1 );
-    leavesTop *= cos ( atan ( center.y / center.x ) * fft3 );
-    leavesTop *= cos ( atan ( botR.y / botR.x ) * fft4 );
-    leavesTop *= cos ( atan ( topL.y / topL.x ) * fft5 );
-    leavesTop *= cos ( t4 + atan ( botL.y / botL.x ) * fft6 );
+    float leavesTop = cos ( atan ( topR.y / topR.x ) * fft7 );
+    leavesTop *= cos ( atan ( center.y / center.x ) * fft8 );
+    leavesTop *= cos ( atan ( botR.y / botR.x ) * fft10 );
+    leavesTop *= cos ( atan ( topL.y / topL.x ) * fft11 );
+    leavesTop *= cos ( t4 + atan ( botL.y / botL.x ) * fft5 );
     float leaves1 = leafBase + leavesTop;
     color4 *= smoothstep ( leaves1, leaves1 + fft2, length ( center ) );
-    color2 *= smoothstep ( leaves1, leaves1 + fft2, length ( center ) );
+    color1 *= smoothstep ( leaves1, leaves1 + fft2, length ( center ) );
     color7 *= smoothstep ( leaves1, leaves1 + 0.1 + fft2, length ( center ) );
 
     //color5
@@ -103,7 +103,7 @@ void main(){
     //final color
 
     vec3 colorNoise = color6 + color5;
-    vec3 color = normalize ( exp2 ( colorNoise ) + exp2 ( color4 ) - color2 + color7 );
+    vec3 color = normalize ( exp2 ( colorNoise ) + exp2 ( color4 ) - color1 + color7 );
     // color = min( color, color7 );
     gl_FragColor = vec4( color, 1.0 );
 }

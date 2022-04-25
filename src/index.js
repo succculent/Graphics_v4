@@ -43,7 +43,7 @@ function component() {
     let s4 = new scene4( sizes, A );
     let s5 = new scene5( sizes, A );
     let s6 = new scene6( sizes, A );
-    let scenes = [ s1, s2, s3, s5, s6 ];
+    let scenes = [ s1, s2, s3, s6 ];
     let curSceneIndex = 0;
     let curScene = scenes[ curSceneIndex ];
 
