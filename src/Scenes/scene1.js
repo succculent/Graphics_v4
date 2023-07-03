@@ -11,7 +11,7 @@ export default class scene1
         this.diameter = 30;
         //create scene
         this.scene = new THREE.Scene( );
-        this.scene.background = new THREE.Color( 0.9, 0.9, 0.9 );
+        this.scene.background = new THREE.Color( 0.1, 0.1, 0.1 );
         //create objects
         this.O = new Objects( );
         this.O.objects1( this.scene );

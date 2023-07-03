@@ -120,4 +120,11 @@ export default class Camera
         this.camera.position.set( 0, 0, -20 );
         this.camera.lookAt( 0, 0, 0 );
     }
+    createCameraT( sizes ) {
+        this.camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 11, 100);
+        this.camera.lookAt(0,0,0);
+        this.camera.position.x = 0;
+        this.camera.position.y = 0;
+        this.camera.position.z = -20;
+    }
 };

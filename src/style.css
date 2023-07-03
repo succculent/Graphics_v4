@@ -1,44 +1,72 @@
 html,
 body
 {
-    overflow: hidden;
-    background-color: rgb( 255, 255, 255 );
-    margin: 0;
-    padding: 0;
+  overflow: hidden;
+  background-color: rgb( 255, 255, 255 );
+  margin: 0;
+  padding: 0;
 }
 
 .webgl
 {
-    position: absolute;
-    outline: none;
-    z-index: 1;
-    width: 100%;
-    image-rendering: optimizeSpeed;
+  outline: none;
+  image-rendering: optimizeSpeed;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
 }
 
-.popup
+.tsCanvas
 {
-    color: rgb(0, 50, 20);
-    background-color: rgba( 255, 255, 255, 0.3 );
-    border-radius: 3px;
-    z-index: 5;
-    position: absolute;
-    float: left;
-    width: 400px;
-    text-align: center;
+  z-index: 2;
+  mix-blend-mode: screen;
+  opacity: 0.15;
 }
 
-.hidden
+.AV
 {
-    visibility: hidden;
-    /* transition: 'visibility' 5s; */
+  z-index: 1;
+  mix-blend-mode: difference;
+  
 }
 
-h1
-{
-    font-size: 1.5em;
+.box {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  mix-blend-mode: difference;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  font-size:medium;
 }
-h2
-{
-    font-size: 1em;
+
+.links {
+  z-index: 5;
+  position: absolute;
+  bottom: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  mix-blend-mode: difference;
+  font-size: small;
+  width: 100vw;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: flex;
+  z-index: 4;
 }

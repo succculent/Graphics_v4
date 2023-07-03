@@ -5,6 +5,8 @@ import vertexCircles from '../shaders/vertexCirlces.glsl'
 import fragmentCircles from '../shaders/fragmentCirlces.glsl'
 import vertexVoronoi from '../shaders/vertexVoronoi.glsl'
 import fragmentVoronoi from '../shaders/fragmentVoronoi.glsl'
+import BVS from '../shaders/backgroundVert.glsl'
+import BFS from '../shaders/backgroundFrag.glsl'
 
 export default class Objects
 {
@@ -200,5 +202,32 @@ export default class Objects
     {
         this.planeMaterial.uniforms.uTime.value = elapsedTime;
         this.planeMaterial.uniforms.uFFT.value = A.data;
+    }
+    objectsT( scene, sizes, A )
+    {
+        this.material = new THREE.ShaderMaterial({
+            vertexShader: BVS,
+            fragmentShader: BFS,
+            uniforms: {
+                uTime: {value: 0.0},
+                uResY: {value: sizes.height},
+                uResX: {value: sizes.width},
+            },
+            side: THREE.DoubleSide,
+        });
+        this.material.needsUpdate = true;
+        // this.name = 
+        this.geometry = new THREE.SphereGeometry(50);
+        this.plane = new THREE.Mesh(this.geometry, this.material);
+        scene.add( this.plane )
+    }
+    resizeT( sizes )
+    {
+        this.material.uniforms.uResY.value = sizes.height;
+        this.material.uniforms.uResX.value = sizes.width;
+    }
+    tickT( A, deltaTime, elapsedTime )
+    {
+        this.material.uniforms.uTime.value = elapsedTime;
     }
 };

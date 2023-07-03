@@ -3,7 +3,7 @@ import Objects from '../Components/Objects.js'
 import Camera from '../Components/Camera.js'
 import Lights from '../Components/Lights.js'
 
-export default class scene3
+export default class scene5
 {
     constructor( sizes, A )
     {
