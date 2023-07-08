@@ -78,6 +78,13 @@ a:hover {
   color: lightgray;
 }
 
+img {
+  height: auto;
+  z-index: 20;
+  color: white;
+  mix-blend-mode: difference;
+}
+
 .hidden {
   display: none;
 }

@@ -1,18 +1,7 @@
 import _ from 'lodash';
 import './style.css';
-// import './skeleton.css';
-// import './normalize.css';
 import * as THREE from 'three'
-import song1 from './assets/song1.mp3'
-import song2 from './assets/song2.mp3'
-import song3 from './assets/song3.mp3'
-import song4 from './assets/song4.mp3'
-import song5 from './assets/song5.mp3'
-import song6 from './assets/song6.mp3'
-import song7 from './assets/song7.mp3'
-import song8 from './assets/song8.mp3'
-import song9 from './assets/song9.mp3'
-import song10 from './assets/song10.mp3'
+
 import gitIcon from './assets/github.png'
 import instaIcon from './assets/insta.png'
 import soundIcon from './assets/soundcloud.png'
@@ -20,14 +9,7 @@ import linkedIcon from './assets/linked.png'
 import twitterIcon from './assets/twitter.png'
 import spotifyIcon from './assets/spotify.png'
 import AudioInstance from './Components/Audio.js'
-import Renderer from './Components/Renderer.js' 
-import scene1 from './Scenes/scene1.js'
-import scene2 from './Scenes/scene2.js'
-import scene3 from './Scenes/scene3.js'
-import scene4 from './Scenes/scene4.js'
-import scene5 from './Scenes/scene5.js'
-import scene6 from './Scenes/scene6.js'
-import titlescene from './Scenes/titlescene.js'
+import Experience from './Components/Experience.js'
 
 
 function createLink(url, icon, alt) {
@@ -46,11 +28,6 @@ function component() {
     const element = document.createElement( 'div' );
 
     //sizes 
-
-    var title_sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight
-    };
 
     var sizes = {
       width: window.innerWidth,
@@ -132,37 +109,18 @@ function component() {
     //audio track
 
     let A = new AudioInstance( 2048 );
-    let songs = [ song1, song2, song3, song4, song5, song6, song7, song8, song9, song10 ];
-    let curSongIndex = 0;
-    A.loadTrack( songs[curSongIndex] );
     element.appendChild( A.audio );
 
     //scene track
-
-    let scen1 = new scene1( sizes, A );
-    let scen2 = new scene2( sizes, A );
-    let scen3 = new scene3( sizes, A );
-    let scen6 = new scene6( sizes, A );
-    let titc = new titlescene( title_sizes, A );
-    let scenes = [ scen1, scen2, scen3, scen6 ];
-    let curSceneIndex = 0;
-    let curScene = scenes[ curSceneIndex ];
-
-    //renderers
-
-    let R = new Renderer( canvas, sizes );
-    let R2 = new Renderer( tsCanvas, title_sizes );
+    let E = new Experience( sizes, A, canvas, tsCanvas );
 
     //resizing
 
     window.addEventListener( 'resize', ( ) =>
     {
-        title_sizes.width = window.innerWidth;
-        title_sizes.height = window.innerHeight;
         sizes.width = window.innerWidth;
         sizes.height = window.innerHeight;
-        curScene.resize( sizes );
-        titc.resize( title_sizes );
+        E.resize( sizes );
     });
 
     //key listeners
@@ -173,30 +131,26 @@ function component() {
         }
         switch ( event.key ) {
           case "ArrowDown":
-            if ( curSongIndex == 0 ) curSongIndex = songs.length - 1;
-            else curSongIndex--;
-            A.loadTrack( songs[curSongIndex] );
+            A.prevSong( );
             if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
             break;
           case "ArrowUp":
-            curSongIndex = ( curSongIndex + 1 ) % songs.length;
-            A.loadTrack( songs[curSongIndex] );
+            A.nextSong( );
             if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
             break;
           case "ArrowLeft":
-            if ( curSceneIndex == 0 ) curSceneIndex = scenes.length - 1;
-            else curSceneIndex--;
-            curScene = scenes[ curSceneIndex ];
+            E.prevScene( );
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
             break;
           case "ArrowRight":
-            curSceneIndex = ( curSceneIndex + 1 ) % scenes.length;
-            curScene = scenes[ curSceneIndex ];
+            E.nextScene( );
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
             break;
           case " ":
-            A.toggleAudio( );
+            if (A.initFlag) A.init( );
+            else A.toggleAudio( );
             if (!desc1.classList.contains('hidden')) desc1.classList.add('hidden');
+            break;
           default:
             return; // Quit when this doesn't handle the key event.
         }
@@ -207,7 +161,7 @@ function component() {
     //mobile swipe listener 
 
     var startX, startY, endX, endY;
-    var minDistance = 20;
+    var minDistance = 50;
 
     window.addEventListener( "touchstart", function ( event ) {
       var touch = event.touches[0];
@@ -221,30 +175,25 @@ function component() {
       endY = touch.clientY;
       var deltaX = endX - startX;
       var deltaY = endY - startY;
-      if (Math.abs(deltaX) <= minDistance || Math.abs(deltaY) <= minDistance) {
-        A.toggleAudio( );
+      if (Math.abs(deltaX) <= minDistance && Math.abs(deltaY) <= minDistance) {
+        if (A.initFlag) A.init( );
+        else A.toggleAudio( );
         if (!desc1.classList.contains('hidden')) desc1.classList.add('hidden');
       } else {
         if (Math.abs(deltaX) < Math.abs(deltaY)) {
           if (deltaY > 0) { //down
-            if ( curSongIndex == 0 ) curSongIndex = songs.length - 1;
-            else curSongIndex--;
-            A.loadTrack( songs[curSongIndex] );
+            A.prevSong();
             if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
           } else { //up
-            curSongIndex = ( curSongIndex + 1 ) % songs.length;
-            A.loadTrack( songs[curSongIndex] );
+            A.nextSong();
             if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
           }
         } else {
           if (deltaX > 0) { //right
-            curSceneIndex = ( curSceneIndex + 1 ) % scenes.length;
-            curScene = scenes[ curSceneIndex ];
+            E.nextScene();
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
           } else { //left
-            if ( curSceneIndex == 0 ) curSceneIndex = scenes.length - 1;
-            else curSceneIndex--;
-            curScene = scenes[ curSceneIndex ];
+            E.prevScene();
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
           }
         }
@@ -259,10 +208,7 @@ function component() {
         var deltaTime = clock.getDelta( );
         var elapsedTime = clock.getElapsedTime( );
         A.onTick( );
-        R.render( curScene.scene, curScene.C.camera );
-        R2.render( titc.scene, titc.C.camera );
-        curScene.tick( deltaTime, elapsedTime, A );
-        titc.tick( deltaTime, elapsedTime, A );
+        E.tick( deltaTime, elapsedTime, A );
 
         if ( desc3.classList.contains('hidden') && desc2.classList.contains('hidden') && desc1.classList.contains('hidden') && about.classList.contains('hidden')) {
           about.classList.remove('hidden');
