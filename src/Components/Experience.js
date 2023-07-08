@@ -18,7 +18,7 @@ export default class Experience
       this.titc = new titlescene( sizes, A );
       this.scenes = [ scen1, scen2, scen3, scen6 ];
       this.curSceneIndex = 0;
-      this.curScene = scenes[ curSceneIndex ];
+      this.curScene = this.scenes[ this.curSceneIndex ];
 
       this.R = new Renderer( canvas, sizes );
       this.R2 = new Renderer( tsCanvas, sizes );
