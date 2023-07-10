@@ -41,12 +41,17 @@ function component() {
 
     // links
 
+    var contact = document.createElement( 'div' );
+    var email = document.createElement( 'p' );
+    email.innerHTML = 'ada@toydemir.org';
+    contact.appendChild( email );
+
     var links = document.createElement( 'div' );
     // Resume link
     var githubLink = document.createElement('a');
     githubLink.href = 'https://drive.google.com/file/d/1Qh7QOlZFFLYxZgJqM85K4HkvnbGtgqqT/view?usp=sharing';
     githubLink.target = '_blank';
-    githubLink.innerHTML = 'A.T.';
+    githubLink.innerHTML = 'AT';
     githubLink.setAttribute('download', 'Ada Toydemir Resume.pdf');
     links.appendChild(githubLink);
     // Instagram link
@@ -97,6 +102,7 @@ function component() {
     about.classList.add( 'box' );
     about.classList.add( 'hidden' );
     links.classList.add( 'links' );
+    contact.classList.add( 'hidden' );
 
     //append DOM
 
@@ -105,6 +111,7 @@ function component() {
     element.append( inst );
     element.append( about );
     element.append( links );
+    element.append( contact );
 
     //audio track
 
@@ -161,7 +168,7 @@ function component() {
     //mobile swipe listener 
 
     var startX, startY, endX, endY;
-    var minDistance = 50;
+    var minDistance = 25;
 
     window.addEventListener( "touchstart", function ( event ) {
       var touch = event.touches[0];
@@ -213,6 +220,8 @@ function component() {
         if ( desc3.classList.contains('hidden') && desc2.classList.contains('hidden') && desc1.classList.contains('hidden') && about.classList.contains('hidden')) {
           about.classList.remove('hidden');
           about.classList.add('visible');
+          contact.classList.remove('hidden');
+          contact.classList.add('contact-visible');
         }
 
         window.requestAnimationFrame( tick );

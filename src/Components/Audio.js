@@ -17,6 +17,8 @@ export default class AudioInstance
     constructor( fftSize )
     {
         this.audio = new Audio( );
+        this.audio.autoplay = false;
+        this.audio.loop = false;
         this.audioCtx = new AudioContext( );
         this.analyser = this.audioCtx.createAnalyser( );
         this.fft = fftSize;
@@ -26,26 +28,26 @@ export default class AudioInstance
         this.initFlag = true;
         this.songs = [ song1, song2, song3, song4, song5, song6, song7, song8, song9, song10 ];
         this.curSongIndex = 0;
-        this.loadTrack( this.songs[this.curSongIndex] );
+        this.loadTrack( );
 
     }
     destructor( )
     {
         this.audioCtx.close( );
     } 
-    loadTrack( song )
+    loadTrack( )
     {
-        this.audioCtx.close( );
-        this.audioCtx = new AudioContext( );
-        this.analyser = this.audioCtx.createAnalyser( );
-        this.analyser.fftSize = this.fft;
-        this.audio.autoplay = !this.initFlag;
-        this.audio.src = song;
-        this.audio.loop = false;
-        this.source = this.audioCtx.createMediaElementSource( this.audio );
-        this.source.connect( this.analyser );
-        this.source.connect( this.audioCtx.destination );
-
+        // this.audioCtx.close( );
+        // this.audioCtx = new AudioContext( );
+        // this.analyser = this.audioCtx.createAnalyser( );
+        // this.analyser.fftSize = this.fft;
+        // this.audio.autoplay = !this.initFlag;
+        this.audio.load(this.songs[this.curSongIndex]);
+        if (!this.initFlag) this.audio.play;
+        // this.audio.loop = false;
+        // this.source = this.audioCtx.createMediaElementSource( this.audio );
+        // this.source.connect( this.analyser );
+        // this.source.connect( this.audioCtx.destination );
     }
     onTick( )
     {
@@ -64,15 +66,18 @@ export default class AudioInstance
     }
     init( ) {
         this.initFlag = false;
+        this.source = this.audioCtx.createMediaElementSource( this.audio );
+        this.source.connect( this.analyser );
+        this.source.connect( this.audioCtx.destination );
         this.audio.play( );
     }
     prevSong( ) {
         if ( this.curSongIndex == 0 ) this.curSongIndex = this.songs.length - 1;
         else this.curSongIndex--;
-        this.loadTrack( this.songs[this.curSongIndex] );
+        this.loadTrack( );
     }
     nextSong( ) {
         this.curSongIndex = ( this.curSongIndex + 1 ) % this.songs.length;
-        this.loadTrack( this.songs[this.curSongIndex] );
+        this.loadTrack( );
     }
 };
