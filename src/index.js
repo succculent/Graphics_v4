@@ -48,12 +48,12 @@ function component() {
 
     var links = document.createElement( 'div' );
     // Resume link
-    var githubLink = document.createElement('a');
-    githubLink.href = 'https://drive.google.com/file/d/1Qh7QOlZFFLYxZgJqM85K4HkvnbGtgqqT/view?usp=sharing';
-    githubLink.target = '_blank';
-    githubLink.innerHTML = 'AT';
-    githubLink.setAttribute('download', 'Ada Toydemir Resume.pdf');
-    links.appendChild(githubLink);
+    var resume_link = document.createElement('a');
+    resume_link.href = 'https://drive.proton.me/urls/5849QZJYBW#D3cnidASvm6N';
+    resume_link.target = '_blank';
+    resume_link.innerHTML = 'AT';
+    resume_link.setAttribute('download', 'Ada Toydemir Resume.pdf');
+    links.appendChild(resume_link);
     // Instagram link
     var instagramLink = createLink( 'https://www.instagram.com/simulacrum_._/', instaIcon, "Instagram");
     links.appendChild(instagramLink);
@@ -191,19 +191,19 @@ function component() {
       var deltaY = endY - startY;
       if (!(Math.abs(deltaX) <= minDistance && Math.abs(deltaY) <= minDistance)) {
         if (Math.abs(deltaX) < Math.abs(deltaY)) {
-          if (deltaY > 0) { //down
-            A.prevSong();
-            if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
-          } else { //up
+          if (deltaY > 0) { //up
             A.nextSong();
+            if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
+          } else { //down
+            A.prevSong();
             if (!desc2.classList.contains('hidden')) desc2.classList.add('hidden');
           }
         } else {
-          if (deltaX > 0) { //right
-            E.nextScene();
-            if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
-          } else { //left
+          if (deltaX > 0) { //left
             E.prevScene();
+            if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
+          } else { //right
+            E.nextScene();
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
           }
         }
