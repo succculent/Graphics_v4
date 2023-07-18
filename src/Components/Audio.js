@@ -29,7 +29,6 @@ export default class AudioInstance
         this.songs = [ song1, song2, song3, song4, song5, song6, song7, song8, song9, song10 ];
         this.curSongIndex = 0;
         this.loadTrack( );
-
     }
     destructor( )
     {
@@ -37,17 +36,10 @@ export default class AudioInstance
     } 
     loadTrack( )
     {
-        // this.audioCtx.close( );
-        // this.audioCtx = new AudioContext( );
-        // this.analyser = this.audioCtx.createAnalyser( );
-        // this.analyser.fftSize = this.fft;
-        // this.audio.autoplay = !this.initFlag;
-        this.audio.load(this.songs[this.curSongIndex]);
-        if (!this.initFlag) this.audio.play;
-        // this.audio.loop = false;
-        // this.source = this.audioCtx.createMediaElementSource( this.audio );
-        // this.source.connect( this.analyser );
-        // this.source.connect( this.audioCtx.destination );
+        this.audio.src = this.songs[this.curSongIndex];
+        this.audio.load( );
+        if (!this.initFlag) this.audio.play( );
+        // else this.init( )
     }
     onTick( )
     {

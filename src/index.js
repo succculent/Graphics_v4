@@ -83,7 +83,8 @@ function component() {
 
     var inst = document.createElement( 'div' );
     var desc1 = document.createElement( 'p' );
-    desc1.innerText = 'TAP/SPACE to play/pause music\n';
+    desc1.innerText = 'TAP to play/pause music\n';
+    
     var desc2 = document.createElement( 'p' );
     desc2.innerText = 'UP/DOWN to change songs\n';
     var desc3 = document.createElement( 'p' );
@@ -103,6 +104,8 @@ function component() {
     about.classList.add( 'hidden' );
     links.classList.add( 'links' );
     contact.classList.add( 'hidden' );
+    desc1.classList.add( 'buton' );
+    about.classList.add( 'buton' );
 
     //append DOM
 
@@ -130,6 +133,15 @@ function component() {
         E.resize( sizes );
     });
 
+    //play pause
+    function clickEvent( ) {
+      if (A.initFlag) A.init( );
+      else A.toggleAudio( );
+      if (!desc1.classList.contains('hidden')) desc1.classList.add('hidden');
+    }
+    desc1.onclick = clickEvent;
+    about.onclick = clickEvent;
+
     //key listeners
 
     window.addEventListener( "keydown", function ( event ) {
@@ -152,11 +164,6 @@ function component() {
           case "ArrowRight":
             E.nextScene( );
             if (!desc3.classList.contains('hidden')) desc3.classList.add('hidden');
-            break;
-          case " ":
-            if (A.initFlag) A.init( );
-            else A.toggleAudio( );
-            if (!desc1.classList.contains('hidden')) desc1.classList.add('hidden');
             break;
           default:
             return; // Quit when this doesn't handle the key event.
@@ -182,11 +189,7 @@ function component() {
       endY = touch.clientY;
       var deltaX = endX - startX;
       var deltaY = endY - startY;
-      if (Math.abs(deltaX) <= minDistance && Math.abs(deltaY) <= minDistance) {
-        if (A.initFlag) A.init( );
-        else A.toggleAudio( );
-        if (!desc1.classList.contains('hidden')) desc1.classList.add('hidden');
-      } else {
+      if (!(Math.abs(deltaX) <= minDistance && Math.abs(deltaY) <= minDistance)) {
         if (Math.abs(deltaX) < Math.abs(deltaY)) {
           if (deltaY > 0) { //down
             A.prevSong();
