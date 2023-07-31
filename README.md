@@ -1,16 +1,7 @@
 # Graphics_v4
-web graphics and audio visualization
+This is the repo for my personal website featuring custom web visuals to my music!  This is also a template I use for all my webGL/ThreeJS graphics projects. Built with webpack and published on https://www.toydemir.org
 
-## Goals
-### Primary Goal:
-#### Showcase Web Music Visualization
-### Secondary Goals:
-1. Showcase music
-2. Implement shader transitions
-3. Implement a particle based smoke shader
-4. Add user interactivity
-5. Add information about myself!
-6. Make. More. Visuals
-7. Optimize
-8. Mobile Friendly
-9. Publish :)
+### ToDo:
+1. Implement shader transitions
+2. Implement a particle based mouse follow smoke shader
+3. Make. More. Visuals
