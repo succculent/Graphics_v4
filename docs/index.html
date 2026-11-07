@@ -1,9 +1,219 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>A.T.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_sour-c51587.bundle.js"></script><script defer src="index.bundle.js"></script></head>
-  <body>
-  </body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulacrum — Ada Toydemir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf8f0;
+    --fg: #1d1b22;
+    --muted: #5e5a68;
+    --accent: #a3245e;
+    --panel: rgba(255, 255, 255, 0.58);
+    --line: rgba(29, 27, 34, 0.12);
+    --yellow: #fff3bf;
+    --green: #dcf3cf;
+    --white: #ffffff;
+    --pink: #ffd6e7;
+    --display: "Syne", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html { min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: clamp(14px, 0.35vw + 12.6px, 16px);
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding-block: clamp(24px, 5vh, 56px);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+  }
+
+  /* Slow drifting pastel gradient. z-index -1 keeps it in the root stacking
+     context so the title's blend mode mixes with it. */
+  #bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(125deg,
+      var(--yellow) 0%, var(--green) 22%, var(--white) 42%,
+      var(--pink) 62%, var(--yellow) 82%, var(--green) 100%);
+    background-size: 300% 300%;
+    animation: drift 28s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0%   { background-position: 0% 30%; }
+    50%  { background-position: 100% 70%; }
+    100% { background-position: 40% 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { #bg { animation: none; } }
+
+  .wrap {
+    width: 100%;
+    max-width: 880px;
+    display: grid;
+    justify-items: center;
+    gap: clamp(18px, 3vh, 32px);
+  }
+
+  header { text-align: center; width: 100%; }
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 800;
+    /* Scales with the screen: fills the width on phones, caps on desktop. */
+    font-size: clamp(26px, calc((100vw - 48px) / 12.4), 74px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    color: #ffffff;
+    mix-blend-mode: difference;
+  }
+  .loc {
+    margin: 12px 0 0;
+    font-size: 0.78em;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+  .name { margin: 2px 0 0; color: var(--muted); font-size: 0.88em; }
+
+  .card {
+    width: 100%;
+    max-width: 540px;
+    background: var(--panel);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(60, 40, 70, 0.08);
+    padding: clamp(20px, 4vw, 32px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .bio { margin: 0; font-size: 0.94em; }
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; }
+  .services li, .contact li {
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 12px;
+    min-width: 0;
+  }
+  .services li { align-items: baseline; }
+  .services li span:last-child { color: var(--muted); font-size: 0.8em; text-align: right; margin-left: auto; }
+  .contact li { align-items: center; }
+  .contact .label { color: var(--muted); font-size: 0.8em; }
+  .contact a { color: var(--fg); text-decoration: none; word-break: break-all; text-align: right; }
+  .contact a:hover, .contact a:focus-visible { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.copy {
+    font: inherit;
+    font-size: 0.72em;
+    background: none;
+    color: var(--accent);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  @media (max-width: 440px) {
+    .services li span:last-child { text-align: left; margin-left: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div id="bg" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <h1>SIMULACRUM</h1>
+      <p class="loc">Salt Lake City</p>
+      <p class="name">Ada Toydemir</p>
+    </header>
+
+    <main class="card">
+      <p class="bio">Turkish American electronic DJ and audiovisual artist working where sound, code and light meet. I play club and warehouse sets and build the generative visuals and lighting that go with them.</p>
+
+      <section>
+        <h2>Services</h2>
+        <ul class="services">
+          <li><span>DJ sets</span><span>Clubs, raves and private events</span></li>
+          <li><span>Live visuals / VJ</span><span>Resolume and generative shaders</span></li>
+          <li><span>Stage lighting</span><span>DMX and audio-reactive lighting</span></li>
+          <li><span>Audio engineering</span><span>Live sound and mixing</span></li>
+          <li><span>Equipment rental</span><span>DJ, sound and lighting gear</span></li>
+          <li><span>Event production</span><span>Installations and set design</span></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <ul class="contact">
+          <li>
+            <span class="label">Email</span>
+            <span><span id="em">ada [at] toydemir [dot] org</span><button class="copy" id="copy" type="button" hidden>copy</button></span>
+          </li>
+          <li>
+            <span class="label">Instagram</span>
+            <a href="https://www.instagram.com/simulacrum_._/" target="_blank" rel="noopener">@simulacrum_._</a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="bio">For bookings, rates and availability, please send a message by email or Instagram with your event date, venue and a short description. I'm happy to put together a set, visuals or lighting package to suit your event.</p>
+    </main>
+  </div>
+
+  <script>
+    // Email assembled at runtime so the full address never appears in the source.
+    (function () {
+      var p = ["ada", "toyd" + "emir", "o" + "rg"];
+      var addr = p[0] + String.fromCharCode(64) + p[1] + "." + p[2];
+      var el = document.getElementById("em");
+      var a = document.createElement("a");
+      a.href = "mai" + "lto:" + addr;
+      a.textContent = addr;
+      el.replaceWith(a);
+      var btn = document.getElementById("copy");
+      btn.hidden = false;
+      btn.addEventListener("click", function () {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(addr).then(function () {
+            btn.textContent = "copied";
+            setTimeout(function () { btn.textContent = "copy"; }, 1500);
+          }, function () {});
+        }
+      });
+    })();
+  </script>
+</body>
 </html>
